@@ -26,6 +26,12 @@ export const DICT_TYPE = {
   flinkVersion: 'flink_version',
   flinkStateBackend: 'flink_state_backend',
   flinkClusterStatus: 'flink_cluster_status',
+  flinkSemantic: 'flink_semantic',
+  flinkCheckpointRetain: 'flink_checkpoint_retain',
+  flinkRestartStrategy: 'flink_restart_strategy',
+  flinkHA: 'flink_high_availability',
+  flinkArtifactType: 'flink_artifact_type',
+  seatunnelVersion: 'seatunnel_version',
 };
 
 export const USER_AUTH = {
@@ -36,14 +42,22 @@ export const USER_AUTH = {
   expireTime: 'u_expire_time',
 };
 
-export const PRIVILEGE_CODE = {
-  studioShow: 'psdo0',
-  studioDataBoardShow: 'psdb0',
+export const RESOURCE_TYPE = {
+  flinkRelease: 'flink_release',
+  clusterCredential: 'cluster_credential',
+};
 
+export const WORKSPACE_CONF = {
+  projectId: 'projectId',
+}
+
+export const PRIVILEGE_CODE = {
   // todo flink code
   flinkShow: 'pflink0',
   flinkReleaseShow: 'pflinkr0',
 
+  studioShow: 'psdo0',
+  studioDataBoardShow: 'psdb0',
   datadevShow: 'pdev0',
   datadevDatasourceShow: 'pdts0',
   datadevProjectShow: 'pddp0',

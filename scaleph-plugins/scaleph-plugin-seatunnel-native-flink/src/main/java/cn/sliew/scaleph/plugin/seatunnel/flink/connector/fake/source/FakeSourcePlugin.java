@@ -29,6 +29,7 @@ import cn.sliew.scaleph.plugin.seatunnel.flink.SeatunnelNativeFlinkPlugin;
 import cn.sliew.scaleph.plugin.seatunnel.flink.common.CommonProperties;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.auto.service.AutoService;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ import java.util.List;
 
 import static cn.sliew.scaleph.common.enums.SeatunnelNativeFlinkPluginEnum.FAKE_SOURCE;
 
+@AutoService(SeatunnelNativeFlinkPlugin.class)
 public class FakeSourcePlugin extends SeatunnelNativeFlinkPlugin {
 
     private final static String MOCK_DATA_SCHEMA_CONFIG = "mock_config";
@@ -48,7 +50,7 @@ public class FakeSourcePlugin extends SeatunnelNativeFlinkPlugin {
     private final static String MOCK_DATA_SCHEMA_VALUE_SEED = "valueSeed";
 
     public FakeSourcePlugin() {
-        this.pluginInfo = new PluginInfo(FAKE_SOURCE.getValue(), "fake source connector", "2.1.1", FakeSourcePlugin.class.getName());
+        this.pluginInfo = new PluginInfo(FAKE_SOURCE.getValue(), "fake source connector", FakeSourcePlugin.class.getName());
 
         final List<PropertyDescriptor> props = new ArrayList<>();
         props.add(CommonProperties.RESULT_TABLE_NAME);
@@ -64,7 +66,6 @@ public class FakeSourcePlugin extends SeatunnelNativeFlinkPlugin {
     }
 
     /**
-     *
      * @return
      */
     @Override

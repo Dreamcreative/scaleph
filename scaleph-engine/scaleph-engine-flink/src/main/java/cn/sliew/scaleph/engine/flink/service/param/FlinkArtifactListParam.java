@@ -18,15 +18,19 @@
 
 package cn.sliew.scaleph.engine.flink.service.param;
 
+import cn.sliew.scaleph.common.dict.flink.FlinkArtifactType;
 import cn.sliew.scaleph.common.param.PaginationParam;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class FlinkArtifactListParam extends PaginationParam {
 
     @ApiModelProperty("名称。支持模糊搜索")
     private String name;
+
+    @ApiModelProperty("Artifact 类型。0: Jar, 1: UDF, 2: SQL")
+    private FlinkArtifactType type;
 }

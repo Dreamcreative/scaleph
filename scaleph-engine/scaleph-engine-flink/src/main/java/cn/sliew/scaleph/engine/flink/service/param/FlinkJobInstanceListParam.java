@@ -23,19 +23,13 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
+import javax.validation.constraints.NotNull;
+
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class FlinkJobInstanceListParam extends PaginationParam {
 
-    @ApiModelProperty("flink 任务配置 ID")
-    private Long flinkJobConfigId;
-
-    @ApiModelProperty("flink 集群实例 ID")
-    private Long flinkClusterInstanceId;
-
-    @ApiModelProperty("flink 任务 ID")
-    private Long jobId;
-
-    @ApiModelProperty("任务状态。0: 已创建, 1: 创建失败")
-    private String status;
+    @NotNull
+    @ApiModelProperty("flink job code")
+    private Long flinkJobCode;
 }

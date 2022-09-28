@@ -23,6 +23,7 @@ import cn.sliew.scaleph.plugin.framework.core.PluginInfo;
 import cn.sliew.scaleph.plugin.framework.property.PropertyDescriptor;
 import cn.sliew.scaleph.plugin.seatunnel.flink.SeatunnelNativeFlinkPlugin;
 import cn.sliew.scaleph.plugin.seatunnel.flink.common.CommonProperties;
+import com.google.auto.service.AutoService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,10 +33,11 @@ import static cn.sliew.scaleph.common.enums.SeatunnelNativeFlinkPluginEnum.INFLU
 import static cn.sliew.scaleph.plugin.seatunnel.flink.connector.influxdb.InfluxDBProperties.*;
 import static cn.sliew.scaleph.plugin.seatunnel.flink.connector.influxdb.source.InfluxDBSourceProperties.*;
 
+@AutoService(SeatunnelNativeFlinkPlugin.class)
 public class InfluxDBSourcePlugin extends SeatunnelNativeFlinkPlugin {
 
     public InfluxDBSourcePlugin() {
-        this.pluginInfo = new PluginInfo(INFLUXDB_SOURCE.getValue(), "influxdb source connector", "2.1.1", InfluxDBSourcePlugin.class.getName());
+        this.pluginInfo = new PluginInfo(INFLUXDB_SOURCE.getValue(), "influxdb source connector", InfluxDBSourcePlugin.class.getName());
 
         final List<PropertyDescriptor> props = new ArrayList<>();
         props.add(SERVER_URL);

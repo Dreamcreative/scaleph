@@ -22,7 +22,7 @@
     <parent>
         <groupId>cn.sliew</groupId>
         <artifactId>scaleph</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>scaleph-api</artifactId>
@@ -31,10 +31,6 @@
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>scaleph-engine-seatunnel</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.parent.groupId}</groupId>
-            <artifactId>scaleph-meta</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
@@ -104,7 +100,6 @@
                 <configuration>
                     <mainClass>cn.sliew.scaleph.Application</mainClass>
                     <layout>ZIP</layout>
-                    <fork>true</fork>
                     <jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>
                     <excludes>
                         <exclude>

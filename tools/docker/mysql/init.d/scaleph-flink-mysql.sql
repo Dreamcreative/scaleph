@@ -1,93 +1,120 @@
 create database if not exists scaleph default character set utf8mb4 collate utf8mb4_unicode_ci;
 use scaleph;
 
-/* flink 集群配置 */
 DROP TABLE IF EXISTS flink_cluster_config;
 CREATE TABLE `flink_cluster_config`
 (
-    `id`                    BIGINT       NOT NULL AUTO_INCREMENT COMMENT '自增主键',
-    `name`                  VARCHAR(255) NOT NULL COMMENT '名称',
-    `flink_version`         VARCHAR(32)  NOT NULL COMMENT '集群版本',
-    `resource_provider`     VARCHAR(4)   NOT NULL COMMENT 'Resource。0: Standalone, 1: Native Kubernetes, 2: YARN',
-    `deploy_mode`           VARCHAR(4)   NOT NULL COMMENT 'flink 部署模式。0: Application, 1: Per-Job, 2: Session',
-    `flink_release_id`      BIGINT       NOT NULL COMMENT 'flink release',
-    `cluster_credential_id` BIGINT COMMENT '集群凭证 id。如 hadoop 的 core-site.xml，kubernetes 的 kubeconfig',
-    `config_options`        TEXT COMMENT 'flink 集群配置项',
-    `remark`                VARCHAR(256) COMMENT '备注',
-    `creator`               VARCHAR(32) COMMENT '创建人',
-    `create_time`           TIMESTAMP    NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `editor`                VARCHAR(32) COMMENT '修改人',
-    `update_time`           TIMESTAMP    NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-    PRIMARY KEY (`id`)
-) ENGINE = INNODB COMMENT = 'flink 集群配置';
+    `id`                    BIGINT       NOT NULL AUTO_INCREMENT,
+    `name`                  VARCHAR(255) NOT NULL,
+    `flink_version`         VARCHAR(32)  NOT NULL,
+    `resource_provider`     VARCHAR(4)   NOT NULL,
+    `deploy_mode`           VARCHAR(4)   NOT NULL,
+    `flink_release_id`      BIGINT       NOT NULL,
+    `cluster_credential_id` BIGINT       NOT NULL,
+    `config_options`        TEXT,
+    `remark`                VARCHAR(255),
+    `creator`               VARCHAR(32),
+    `create_time`           DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `editor`                VARCHAR(32),
+    `update_time`           DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    KEY `idx_name` (`name`)
+) ENGINE = INNODB COMMENT = 'flink cluster config';
 
-/* flink 集群实例 */
 DROP TABLE IF EXISTS flink_cluster_instance;
 CREATE TABLE `flink_cluster_instance`
 (
-    `id`                      BIGINT       NOT NULL AUTO_INCREMENT COMMENT '自增主键',
-    `flink_cluster_config_id` BIGINT       NOT NULL COMMENT '集群配置',
-    `name`                    VARCHAR(255) NOT NULL COMMENT '集群名称',
-    `cluster_id`              VARCHAR(64)  NOT NULL DEFAULT '' COMMENT '集群id',
-    `web_interface_url`       VARCHAR(255) NOT NULL COMMENT '集群 web-ui 链接',
-    `status`                  VARCHAR(4)   NOT NULL COMMENT '集群状态。0: 已创建, 1: 运行中, 2: 停止',
-    `remark`                  VARCHAR(256)          DEFAULT NULL COMMENT '备注',
-    `creator`                 VARCHAR(32) COMMENT '创建人',
-    `create_time`             TIMESTAMP             DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `editor`                  VARCHAR(32) COMMENT '修改人',
-    `update_time`             TIMESTAMP             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `id`                      BIGINT       NOT NULL AUTO_INCREMENT,
+    `flink_cluster_config_id` BIGINT       NOT NULL,
+    `name`                    VARCHAR(255) NOT NULL,
+    `cluster_id`              VARCHAR(64)  NOT NULL,
+    `web_interface_url`       VARCHAR(255) NOT NULL,
+    `status`                  VARCHAR(4)   NOT NULL,
+    `remark`                  VARCHAR(255),
+    `creator`                 VARCHAR(32),
+    `create_time`             DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `editor`                  VARCHAR(32),
+    `update_time`             DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
-    KEY idx_flink_cluster_config_id (`flink_cluster_config_id`)
-) ENGINE = INNODB COMMENT = 'flink 集群实例';
+    KEY `idx_flink_cluster_config` (`flink_cluster_config_id`),
+    KEY `idx_name` (`name`)
+) ENGINE = INNODB COMMENT = 'flink cluster instance';
 
-/* flink artifact */
 DROP TABLE IF EXISTS flink_artifact;
 CREATE TABLE flink_artifact
 (
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT '自增主键',
-    `name`        VARCHAR(255) NOT NULL COMMENT '名称',
-    `path`        VARCHAR(255) NOT NULL COMMENT '存储路径',
-    `entry_class` VARCHAR(255) COMMENT 'entry point class',
-    `remark`      VARCHAR(255) COMMENT '备注',
-    `creator`     VARCHAR(32) COMMENT '创建人',
-    `create_time` TIMESTAMP    NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `editor`      VARCHAR(32) COMMENT '修改人',
-    `update_time` TIMESTAMP    NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-    PRIMARY KEY (`id`)
+    `id`          BIGINT       NOT NULL AUTO_INCREMENT,
+    `type`        VARCHAR(4)   NOT NULL COMMENT '0: Jar, 1: UDF, 2: SQL',
+    `name`        VARCHAR(255) NOT NULL,
+    `remark`      VARCHAR(255),
+    `creator`     VARCHAR(32),
+    `create_time` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `editor`      VARCHAR(32),
+    `update_time` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    KEY `idx_name` (`type`, `name`)
 ) ENGINE = INNODB COMMENT = 'flink artifact';
 
-/* flink job config */
-DROP TABLE IF EXISTS flink_job_config;
-CREATE TABLE flink_job_config
+DROP TABLE IF EXISTS flink_artifact_jar;
+CREATE TABLE flink_artifact_jar
 (
-    `id`                        BIGINT       NOT NULL AUTO_INCREMENT COMMENT '自增主键',
-    `type`                      VARCHAR(4)   NOT NULL COMMENT '类型。0: artifact, 1: sql+udf',
-    `name`                      VARCHAR(255) NOT NULL COMMENT '名称',
-    `flink_cluster_config_id`   BIGINT       NOT NULL COMMENT 'flink 集群配置 ID',
-    `job_config`                VARCHAR(255) COMMENT '任务自身 配置参数',
-    `flink_config`              VARCHAR(255) COMMENT 'flink 配置参数',
-    `version`                   INT               DEFAULT 1 COMMENT '版本号',
-    `remark`                    VARCHAR(255) COMMENT '备注',
-    `creator`                   VARCHAR(32) COMMENT '创建人',
-    `create_time`               TIMESTAMP    NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `editor`                    VARCHAR(32) COMMENT '修改人',
-    `update_time`               TIMESTAMP    NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-    PRIMARY KEY (`id`)
-) ENGINE = INNODB COMMENT = 'flink job';
+    `id`                BIGINT       NOT NULL AUTO_INCREMENT,
+    `flink_artifact_id` BIGINT       NOT NULL,
+    `version`           varchar(32)  NOT NULL,
+    `flink_version`     VARCHAR(32)  NOT NULL,
+    `entry_class`       VARCHAR(255) NOT NULL,
+    `file_name`         VARCHAR(255) NOT NULL,
+    `path`              VARCHAR(255) NOT NULL,
+    `creator`           VARCHAR(32),
+    `create_time`       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `editor`            VARCHAR(32),
+    `update_time`       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    KEY `idx_flink_artifact` (`flink_artifact_id`)
+) ENGINE = INNODB COMMENT = 'flink artifact jar';
 
-/* flink job instance */
+CREATE TABLE `flink_job`
+(
+    `id`                        BIGINT       NOT NULL AUTO_INCREMENT,
+    `type`                      VARCHAR(4)   NOT NULL COMMENT 'job type. 0: jar, 1: sql+udf, 2: seatunnel',
+    `code`                      BIGINT       NOT NULL,
+    `name`                      VARCHAR(255) NOT NULL,
+    `flink_artifact_id`         BIGINT       NOT NULL,
+    `job_config`                TEXT,
+    `flink_cluster_config_id`   BIGINT       NOT NULL,
+    `flink_cluster_instance_id` BIGINT,
+    `flink_config`              TEXT,
+    `from_version`              BIGINT,
+    `version`                   BIGINT       NOT NULL DEFAULT 0,
+    `remark`                    VARCHAR(255),
+    `creator`                   VARCHAR(32),
+    `create_time`               DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `editor`                    VARCHAR(32),
+    `update_time`               DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `idx_code` (`code`, `version`),
+    KEY `idx_name` (`type`, `name`),
+    KEY `idx_flink_artifact` (`type`, `flink_artifact_id`),
+    KEY `idx_flink_cluster_config` (`flink_cluster_config_id`),
+    KEY `idx_flink_cluster_instance` (`flink_cluster_instance_id`)
+) ENGINE = InnoDB COMMENT ='flink job';
+
 DROP TABLE IF EXISTS flink_job_instance;
 CREATE TABLE flink_job_instance
 (
-    `id`                        BIGINT    NOT NULL AUTO_INCREMENT COMMENT '自增主键',
-    `flink_job_config_id`       BIGINT    NOT NULL COMMENT 'flink 任务配置 ID',
-    `flink_cluster_instance_id` BIGINT    NOT NULL COMMENT 'flink 集群实例 ID',
-    `job_id`                    BIGINT    NOT NULL COMMENT 'flink 任务 ID',
-    `status`                    VARCHAR(4) COMMENT '任务状态。0: 已创建, 1: 创建失败',
-    `remark`                    VARCHAR(255) COMMENT '备注',
-    `creator`                   VARCHAR(32) COMMENT '创建人',
-    `create_time`               TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `editor`                    VARCHAR(32) COMMENT '修改人',
-    `update_time`               TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-    PRIMARY KEY (`id`)
+    `id`                BIGINT       NOT NULL AUTO_INCREMENT,
+    `flink_job_code`    BIGINT       NOT NULL,
+    `flink_job_version` BIGINT       NOT NULL,
+    `job_id`            VARCHAR(64)  NOT NULL,
+    `job_name`          VARCHAR(64)  NOT NULL,
+    `job_state`         VARCHAR(16)  NOT NULL,
+    `cluster_id`        VARCHAR(64)  NOT NULL,
+    `web_interface_url` VARCHAR(255) NOT NULL,
+    `cluster_status`    VARCHAR(16)  NOT NULL,
+    `creator`           VARCHAR(32),
+    `create_time`       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `editor`            VARCHAR(32),
+    `update_time`       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_job` (`flink_job_code`, `flink_job_version`, `job_id`)
 ) ENGINE = INNODB COMMENT = 'flink job instance';

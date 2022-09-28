@@ -23,6 +23,7 @@ import cn.sliew.scaleph.plugin.framework.core.PluginInfo;
 import cn.sliew.scaleph.plugin.framework.property.PropertyDescriptor;
 import cn.sliew.scaleph.plugin.seatunnel.flink.SeatunnelNativeFlinkPlugin;
 import cn.sliew.scaleph.plugin.seatunnel.flink.common.CommonProperties;
+import com.google.auto.service.AutoService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,10 +33,11 @@ import static cn.sliew.scaleph.common.enums.SeatunnelNativeFlinkPluginEnum.JDBC_
 import static cn.sliew.scaleph.plugin.seatunnel.flink.connector.jdbc.JdbcProperties.*;
 import static cn.sliew.scaleph.plugin.seatunnel.flink.connector.jdbc.source.JdbcSourceProperties.*;
 
+@AutoService(SeatunnelNativeFlinkPlugin.class)
 public class JdbcSourcePlugin extends SeatunnelNativeFlinkPlugin {
 
     public JdbcSourcePlugin() {
-        this.pluginInfo = new PluginInfo(JDBC_SOURCE.getValue(), "jdbc source connector", "2.1.1", JdbcSourcePlugin.class.getName());
+        this.pluginInfo = new PluginInfo(JDBC_SOURCE.getValue(), "jdbc source connector", JdbcSourcePlugin.class.getName());
 
         final List<PropertyDescriptor> props = new ArrayList<>();
         props.add(URL);

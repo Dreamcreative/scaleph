@@ -19,7 +19,7 @@
 package cn.sliew.scaleph.api.controller.datadev;
 
 import cn.sliew.scaleph.api.annotation.Logging;
-import cn.sliew.scaleph.common.enums.JobStepTypeEnum;
+import cn.sliew.scaleph.common.dict.seatunnel.SeaTunnelPluginType;
 import cn.sliew.scaleph.engine.seatunnel.service.SeatunnelConnectorService;
 import cn.sliew.scaleph.plugin.framework.core.PluginInfo;
 import cn.sliew.scaleph.plugin.framework.property.PropertyDescriptor;
@@ -44,7 +44,7 @@ import java.util.Set;
 @Slf4j
 @Api(tags = "数据开发-作业管理-step管理")
 @RestController
-@RequestMapping("/api/datadev/job/step")
+@RequestMapping({"/api/datadev/job/step", "/api/di/job/step"})
 public class JobStepController {
 
     @Autowired
@@ -62,16 +62,16 @@ public class JobStepController {
     @ApiOperation(value = "查询 SeaTunnel connector 列表", notes = "查询 source, transform, sink 类型的 connector")
     public Set<PluginInfo> getAvailableConnectors(@ApiParam(name = "stepType",
             value = "job step 类型。source, trans, sink",
-            example = "source", allowableValues = "source, trans, sink") @PathVariable("stepType") JobStepTypeEnum stepType) {
+            example = "source", allowableValues = "source, trans, sink") @PathVariable("stepType") SeaTunnelPluginType stepType) {
         return seatunnelConnectorService.getAvailableConnectors(stepType);
     }
 
-    @Logging
-    @GetMapping("{name}/properties")
-    @ApiOperation(value = "查询 SeaTunnel connector 支持的属性")
-    public List<PropertyDescriptor> getSupportedProperties(@PathVariable("name") String name) {
-        return seatunnelConnectorService.getSupportedProperties(name);
-    }
+//    @Logging
+//    @GetMapping("{name}/properties")
+//    @ApiOperation(value = "查询 SeaTunnel connector 支持的属性")
+//    public List<PropertyDescriptor> getSupportedProperties(@PathVariable("name") String name) {
+//        return seatunnelConnectorService.getSupportedProperties(name);
+//    }
 
 }
 

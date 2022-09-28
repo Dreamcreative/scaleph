@@ -31,6 +31,7 @@ import cn.sliew.scaleph.plugin.seatunnel.flink.common.CommonProperties;
 import cn.sliew.scaleph.system.service.vo.DictVO;
 import cn.sliew.scaleph.system.util.SpringApplicationContextUtil;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.auto.service.AutoService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,10 +41,11 @@ import java.util.Map;
 import static cn.sliew.scaleph.common.enums.SeatunnelNativeFlinkPluginEnum.KAFKA_SINK;
 import static cn.sliew.scaleph.plugin.seatunnel.flink.connector.kafka.sink.KafkaSinkProperties.*;
 
+@AutoService(SeatunnelNativeFlinkPlugin.class)
 public class KafkaSinkPlugin extends SeatunnelNativeFlinkPlugin {
 
     public KafkaSinkPlugin() {
-        this.pluginInfo = new PluginInfo(KAFKA_SINK.getValue(), "kafka sink connector", "2.1.1", KafkaSinkPlugin.class.getName());
+        this.pluginInfo = new PluginInfo(KAFKA_SINK.getValue(), "kafka sink connector", KafkaSinkPlugin.class.getName());
 
         final List<PropertyDescriptor> props = new ArrayList<>();
         props.add(TOPICS);

@@ -30,6 +30,7 @@ export const WORKBENCH_MENU = [
       { title: 'datadev.step.source-mock', menuIcon: 'icon-modify-trace', menuType: 'source', menuName: 'mock' },
       { title: 'datadev.step.source-mockStream', menuIcon: 'icon-modify-trace', menuType: 'source', menuName: 'mockStream' },
       { title: 'datadev.step.source-kafka', menuIcon: 'icon-system', menuType: 'source', menuName: 'kafka' },
+      { title: 'datadev.step.source-druid', menuIcon: 'icon-global-guide', menuType: 'source', menuName: 'druid' },
     ],
   },
   {
@@ -39,10 +40,12 @@ export const WORKBENCH_MENU = [
       { title: 'datadev.step.sink-csv', menuIcon: 'icon-file', menuType: 'sink', menuName: 'csv' },
       { title: 'datadev.step.sink-excel', menuIcon: 'icon-file', menuType: 'sink', menuName: 'excel' },
       { title: 'datadev.step.sink-table', menuIcon: 'icon-table', menuType: 'sink', menuName: 'table' },
-      { title: 'datadev.step.sink-console', menuIcon: 'icon-operation-log', menuType: 'sink', menuName: 'console' },
+      { title: 'datadev.step.sink-console', menuIcon: 'icon-console', menuType: 'sink', menuName: 'console' },
       { title: 'datadev.step.sink-kafka', menuIcon: 'icon-system', menuType: 'sink', menuName: 'kafka' },
-      { title: 'datadev.step.sink-doris', menuIcon: 'icon-system', menuType: 'sink', menuName: 'doris' },
-      { title: 'datadev.step.sink-clickhouse', menuIcon: 'icon-system', menuType: 'sink', menuName: 'clickhouse' },
+      { title: 'datadev.step.sink-doris', menuIcon: 'icon-selct-template', menuType: 'sink', menuName: 'doris' },
+      { title: 'datadev.step.sink-clickhouse', menuIcon: 'icon-date', menuType: 'sink', menuName: 'clickhouse' },
+      { title: 'datadev.step.sink-elasticsearch', menuIcon: 'icon-json', menuType: 'sink', menuName: 'elasticsearch' },
+      { title: 'datadev.step.sink-druid', menuIcon: 'icon-time-update', menuType: 'sink', menuName: 'druid' },
     ],
   },
   {
@@ -241,7 +244,18 @@ export const STEP_ATTR_TYPE = {
   maxRetries: 'max_retries',
   dorisConf: 'doris_conf',
   fields: 'fields',
-  clickhouseConf: 'clickhouse_conf'
+  clickhouseConf: 'clickhouse_conf',
+  index: 'index',
+  indexTimeFormat: 'index_time_format',
+  datasourceName: 'datasourceName',
+  startDate: 'start_date',
+  endDate: 'end_date',
+  columns: 'columns',
+  parallelism: 'parallelism',
+  coordinatorUrl: 'coordinator_url',
+  timestampColumn: 'timestamp_column',
+  timestampFormat: 'timestamp_format',
+  timestampMissingValue: 'timestamp_missing_value',
 };
 
 export class MockData {

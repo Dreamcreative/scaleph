@@ -2,7 +2,7 @@ ARG BASE_RELEASE_IMAGE=ghcr.io/flowerfine/scaleph_seatunnel:2.1.2
 FROM maven:3.8-openjdk-8 as build
 
 COPY ./ /scaleph
-RUN cd /scaleph && mvn -B -U clean package -DskipTests -Dfast -am --projects scaleph-api
+RUN cd /scaleph && mvn -B -U -T 4 clean package -DskipTests -Dfast -am --projects scaleph-api
 
 # BASE_RELEASE_IMAGE argument must be defined twice
 ARG BASE_RELEASE_IMAGE=ghcr.io/flowerfine/scaleph_seatunnel:2.1.2
@@ -34,7 +34,6 @@ ENV ENV_PARAMS=" --spring.datasource.master.jdbc-url=$MYSQL_URL \
  --spring.redis.port=$REDIS_PORT \
  --spring.redis.password=$REDIS_PASSWORD \
  --file-system.endPoint=$MINIO_ENDPOINT \
- --file-system.proxy=true \
  --file-system.accessKey=$MINIO_ACCESS_KEY \
  --file-system.secretKey=$MINIO_SECRET_KEY \
  "

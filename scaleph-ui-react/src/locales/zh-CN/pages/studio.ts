@@ -11,4 +11,5 @@ export default {
   'pages.studio.databoard.startTime': '开始时间',
   'pages.studio.databoard.endTime': '结束时间',
   'pages.studio.databoard.jobInstanceState': '任务实例状态',
+
 };

@@ -18,17 +18,18 @@
 
 package cn.sliew.scaleph.resource.service.param;
 
+import cn.sliew.scaleph.common.dict.flink.FlinkResourceProvider;
 import cn.sliew.scaleph.common.param.PaginationParam;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class ClusterCredentialListParam extends PaginationParam {
 
     @ApiModelProperty("配置文件类型。0: Hadoop, 1: Kubernetes")
-    private String configType;
+    private FlinkResourceProvider configType;
 
     @ApiModelProperty("配置名称")
     private String name;

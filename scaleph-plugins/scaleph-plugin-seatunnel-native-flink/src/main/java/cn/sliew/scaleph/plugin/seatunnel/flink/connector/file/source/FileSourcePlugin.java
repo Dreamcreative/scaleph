@@ -23,6 +23,7 @@ import cn.sliew.scaleph.plugin.framework.core.PluginInfo;
 import cn.sliew.scaleph.plugin.framework.property.PropertyDescriptor;
 import cn.sliew.scaleph.plugin.seatunnel.flink.SeatunnelNativeFlinkPlugin;
 import cn.sliew.scaleph.plugin.seatunnel.flink.common.CommonProperties;
+import com.google.auto.service.AutoService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,10 +32,11 @@ import java.util.List;
 import static cn.sliew.scaleph.common.enums.SeatunnelNativeFlinkPluginEnum.FILE_SOURCE;
 import static cn.sliew.scaleph.plugin.seatunnel.flink.connector.file.source.FileSourceProperties.*;
 
+@AutoService(SeatunnelNativeFlinkPlugin.class)
 public class FileSourcePlugin extends SeatunnelNativeFlinkPlugin {
 
     public FileSourcePlugin() {
-        this.pluginInfo = new PluginInfo(FILE_SOURCE.getValue(), "file source connector", "2.1.1", FileSourcePlugin.class.getName());
+        this.pluginInfo = new PluginInfo(FILE_SOURCE.getValue(), "file source connector", FileSourcePlugin.class.getName());
 
         final List<PropertyDescriptor> props = new ArrayList<>();
         props.add(FORMAT_TYPE);

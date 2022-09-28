@@ -22,7 +22,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.sliew</groupId>
     <artifactId>scaleph</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>scaleph</name>
     <description>Scaleph System</description>
@@ -77,11 +77,6 @@
             <name>Sonatype Nexus Snapshots</name>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
-        <repository>
-            <id>central</id>
-            <name>Central</name>
-            <url>https://repo1.maven.org/maven2/</url>
-        </repository>
     </repositories>
 
     <modules>
@@ -99,12 +94,14 @@
         <module>scaleph-meta</module>
         <module>scaleph-engine</module>
         <module>scaleph-plugins</module>
+        <module>scaleph-workflow</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <akka.scala.binary.version>2.13</akka.scala.binary.version>
         <scala.binary.version>2.11</scala.binary.version>
         <scala.version>2.11.12</scala.version>
         <java.version>1.8</java.version>
@@ -127,25 +124,31 @@
         <velocity.engine.version>2.2</velocity.engine.version>
         <swagger.version>3.0.0</swagger.version>
         <knife4j.vresion>3.0.2</knife4j.vresion>
+        <auto-service.version>1.0.1</auto-service.version>
         <hutool.version>5.5.4</hutool.version>
         <commons.lang3.version>3.5</commons.lang3.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.text.version>1.9</commons.text.version>
         <commons.compress.version>1.19</commons.compress.version>
         <commons.io.version>2.11.0</commons.io.version>
+        <semver.version>0.9.0</semver.version>
         <disruptor.version>3.4.4</disruptor.version>
         <ojdbc.version>21.1.0.0</ojdbc.version>
         <mysql.version>8.0.28</mysql.version>
         <clickhouse-jdbc.version>0.2</clickhouse-jdbc.version>
         <doris.version>5.1.26</doris.version>
         <postgresql.version>42.3.3</postgresql.version>
+        <druid.version>0.22.1</druid.version>
+        <calcite-druid.version>1.31.0</calcite-druid.version>
         <flink.version>1.13.6</flink.version>
-        <flinkful.version>1.13.6_1_8-SNAPSHOT</flinkful.version>
+        <flinkful.version>1.13.6_2_8-SNAPSHOT</flinkful.version>
         <okhttp.version>4.9.3</okhttp.version>
         <guava.version>31.0-jre</guava.version>
         <minio.version>8.3.8</minio.version>
         <milky.version>1.0.6_8</milky.version>
         <hadoop.version>3.3.4</hadoop.version>
+        <akka.version>2.6.19</akka.version>
+        <sofa.ark.version>2.0.0</sofa.ark.version>
     </properties>
 
     <dependencyManagement>
@@ -154,6 +157,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.typesafe.akka</groupId>
+                <artifactId>akka-bom_${akka.scala.binary.version}</artifactId>
+                <version>${akka.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -232,6 +242,11 @@
 
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>scaleph-plugin-framework</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>scaleph-plugin-datasource</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -240,7 +255,11 @@
                 <artifactId>scaleph-plugin-seatunnel-native-flink</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>scaleph-plugin-seatunnel-connectors</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>scaleph-core-di</artifactId>
@@ -249,6 +268,12 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>scaleph-core-scheduler</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>scaleph-workflow-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -289,6 +314,22 @@
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-spring-boot-starter</artifactId>
                 <version>${knife4j.vresion}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>sofa-ark-springboot-starter</artifactId>
+                <version>${sofa.ark.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>sofa-ark-all</artifactId>
+                <version>${sofa.ark.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>sofa-ark-api</artifactId>
+                <version>${sofa.ark.version}</version>
             </dependency>
 
             <dependency>
@@ -337,6 +378,12 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons.io.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.zafarkhaja</groupId>
+                <artifactId>java-semver</artifactId>
+                <version>${semver.version}</version>
             </dependency>
 
             <dependency>
@@ -425,6 +472,10 @@
                         <artifactId>reload4j</artifactId>
                     </exclusion>
                     <exclusion>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>javax.servlet-api</artifactId>
+                    </exclusion>
+                    <exclusion>
                         <groupId>javax.servlet.jsp</groupId>
                         <artifactId>jsp-api</artifactId>
                     </exclusion>
@@ -465,16 +516,39 @@
             </dependency>
 
             <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql.version}</version>
-                <scope>runtime</scope>
+                <groupId>ru.yandex.clickhouse</groupId>
+                <artifactId>clickhouse-jdbc</artifactId>
+                <version>${clickhouse-jdbc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.druid</groupId>
+                <artifactId>druid-indexing-service</artifactId>
+                <version>${druid.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>javax.servlet-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-core</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.calcite</groupId>
+                <artifactId>calcite-druid</artifactId>
+                <version>${calcite-druid.version}</version>
             </dependency>
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>${doris.version}</version>
-                <scope>test</scope>
+                <version>${mysql.version}</version>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>org.postgresql</groupId>
@@ -488,12 +562,6 @@
                 <version>${ojdbc.version}</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>ru.yandex.clickhouse</groupId>
-                <artifactId>clickhouse-jdbc</artifactId>
-                <version>${clickhouse-jdbc.version}</version>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 
@@ -526,11 +594,6 @@
 
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${spring.boot.version}</version>
-                </plugin>
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
@@ -567,6 +630,11 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok-mapstruct-binding</artifactId>
                             <version>${mapstruct.lombok.binding.version}</version>
+                        </path>
+                        <path>
+                            <groupId>com.google.auto.service</groupId>
+                            <artifactId>auto-service</artifactId>
+                            <version>${auto-service.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

@@ -28,5 +28,4 @@ import org.mapstruct.factory.Mappers;
 @Mapper(uses = {}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface FlinkArtifactConvert extends BaseConvert<FlinkArtifact, FlinkArtifactDTO> {
     FlinkArtifactConvert INSTANCE = Mappers.getMapper(FlinkArtifactConvert.class);
-
 }

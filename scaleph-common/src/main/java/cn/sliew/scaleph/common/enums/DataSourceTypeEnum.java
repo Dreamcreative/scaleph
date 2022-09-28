@@ -33,7 +33,9 @@ public enum DataSourceTypeEnum {
     DORIS("Doris", "Doris"),
     CLICKHOUSE("ClickHouse", "ClickHouse"),
 
-    KAFKA("Kafka", "Kafka")
+    KAFKA("Kafka", "Kafka"),
+    ELASTICSEARCH("Elasticsearch", "Elasticsearch"),
+    DRUID("Druid", "Druid"),
     ;
 
     private String code;

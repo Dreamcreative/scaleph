@@ -23,6 +23,7 @@ import cn.sliew.scaleph.plugin.framework.core.PluginInfo;
 import cn.sliew.scaleph.plugin.framework.property.PropertyDescriptor;
 import cn.sliew.scaleph.plugin.seatunnel.flink.SeatunnelNativeFlinkPlugin;
 import cn.sliew.scaleph.plugin.seatunnel.flink.common.CommonProperties;
+import com.google.auto.service.AutoService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,10 +32,11 @@ import java.util.List;
 import static cn.sliew.scaleph.common.enums.SeatunnelNativeFlinkPluginEnum.ELASTICSEARCH_SINK;
 import static cn.sliew.scaleph.plugin.seatunnel.flink.connector.elasticsearch.sink.ElasticsearchSinkProperties.*;
 
+@AutoService(SeatunnelNativeFlinkPlugin.class)
 public class ElasticsearchSinkPlugin extends SeatunnelNativeFlinkPlugin {
 
     public ElasticsearchSinkPlugin() {
-        this.pluginInfo = new PluginInfo(ELASTICSEARCH_SINK.getValue(), "elasticsearch sink connector", "2.1.1", ElasticsearchSinkPlugin.class.getName());
+        this.pluginInfo = new PluginInfo(ELASTICSEARCH_SINK.getValue(), "elasticsearch sink connector", ElasticsearchSinkPlugin.class.getName());
 
         final List<PropertyDescriptor> props = new ArrayList<>();
         props.add(HOSTS);

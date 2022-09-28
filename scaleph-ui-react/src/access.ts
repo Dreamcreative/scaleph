@@ -2,10 +2,15 @@
  * @see https://umijs.org/zh-CN/plugins/plugin-access
  * */
 
-//todo access
-export default function access(initialState: { currentUser?: string } | undefined) {
-  const { currentUser } = initialState ?? {};
+import { AuthService } from './services/auth';
+
+export default function access() {
   return {
-    canAdmin: currentUser && currentUser === 'admin',
+    canAccess: (code: string) => {
+      return AuthService.hasPrivilege(code);
+    },
+    normalRouteFilter: (route: any) => {
+      return AuthService.hasPrivilege(route?.pCode);
+    },
   };
 }
