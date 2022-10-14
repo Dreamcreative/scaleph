@@ -26,7 +26,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface FlinkJobInstanceService extends IService<FlinkJobInstance> {
 
+    @Deprecated
     Page<FlinkJobInstanceDTO> list(FlinkJobInstanceListParam param);
+
+    FlinkJobInstanceDTO selectByCode(Long flinkJobCode);
 
     FlinkJobInstanceDTO selectOne(Long id);
 
@@ -35,5 +38,9 @@ public interface FlinkJobInstanceService extends IService<FlinkJobInstance> {
     int insert(FlinkJobInstanceDTO dto);
 
     int update(FlinkJobInstanceDTO dto);
+
+    FlinkJobInstanceDTO deleteById(Long id);
+
+    int transferToLog(FlinkJobInstanceDTO dto);
 
 }

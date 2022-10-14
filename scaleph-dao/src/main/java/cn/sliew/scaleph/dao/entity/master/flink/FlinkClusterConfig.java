@@ -66,6 +66,10 @@ public class FlinkClusterConfig extends BaseDO {
     @TableField("cluster_credential_id")
     private Long clusterCredentialId;
 
+    @ApiModelProperty("kubernetes 配置")
+    @TableField("kubernetes_options")
+    private String kubernetesOptions;
+
     @ApiModelProperty("flink 集群配置项")
     @TableField("config_options")
     private String configOptions;

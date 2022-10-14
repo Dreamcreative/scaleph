@@ -11,6 +11,7 @@ CREATE TABLE `flink_cluster_config`
     `deploy_mode`           VARCHAR(4)   NOT NULL,
     `flink_release_id`      BIGINT       NOT NULL,
     `cluster_credential_id` BIGINT       NOT NULL,
+    `kubernetes_options`    TEXT,
     `config_options`        TEXT,
     `remark`                VARCHAR(255),
     `creator`               VARCHAR(32),
@@ -27,9 +28,9 @@ CREATE TABLE `flink_cluster_instance`
     `id`                      BIGINT       NOT NULL AUTO_INCREMENT,
     `flink_cluster_config_id` BIGINT       NOT NULL,
     `name`                    VARCHAR(255) NOT NULL,
-    `cluster_id`              VARCHAR(64)  NOT NULL,
-    `web_interface_url`       VARCHAR(255) NOT NULL,
-    `status`                  VARCHAR(4)   NOT NULL,
+    `cluster_id`              VARCHAR(64),
+    `web_interface_url`       VARCHAR(255),
+    `status`                  VARCHAR(4),
     `remark`                  VARCHAR(255),
     `creator`                 VARCHAR(32),
     `create_time`             DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -111,6 +112,9 @@ CREATE TABLE flink_job_instance
     `cluster_id`        VARCHAR(64)  NOT NULL,
     `web_interface_url` VARCHAR(255) NOT NULL,
     `cluster_status`    VARCHAR(16)  NOT NULL,
+    `start_time`        DATETIME,
+    `end_time`          DATETIME,
+    `duration`          BIGINT,
     `creator`           VARCHAR(32),
     `create_time`       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `editor`            VARCHAR(32),
@@ -118,3 +122,26 @@ CREATE TABLE flink_job_instance
     PRIMARY KEY (`id`),
     UNIQUE KEY `uniq_job` (`flink_job_code`, `flink_job_version`, `job_id`)
 ) ENGINE = INNODB COMMENT = 'flink job instance';
+
+DROP TABLE IF EXISTS flink_job_log;
+CREATE TABLE flink_job_log
+(
+    `id`                BIGINT       NOT NULL AUTO_INCREMENT,
+    `flink_job_code`    BIGINT       NOT NULL,
+    `flink_job_version` BIGINT       NOT NULL,
+    `job_id`            VARCHAR(64)  NOT NULL,
+    `job_name`          VARCHAR(64)  NOT NULL,
+    `job_state`         VARCHAR(16)  NOT NULL,
+    `cluster_id`        VARCHAR(64)  NOT NULL,
+    `web_interface_url` VARCHAR(255) NOT NULL,
+    `cluster_status`    VARCHAR(16)  NOT NULL,
+    `start_time`        DATETIME,
+    `end_time`          DATETIME,
+    `duration`          BIGINT,
+    `creator`           VARCHAR(32),
+    `create_time`       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `editor`            VARCHAR(32),
+    `update_time`       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_job` (`flink_job_code`, `flink_job_version`, `job_id`)
+) ENGINE = INNODB COMMENT = 'flink job log';
