@@ -69,6 +69,20 @@ export type SeaTunnelReleaseUploadParam = QueryParam & {
   remark?: String;
 }
 
+export type SeaTunnelConnectorUploadParam = QueryParam & {
+  id: string;
+  pluginName: string;
+  file: File;
+}
+
+export type SeaTunnelConnectorFile = {
+  name: string;
+  len: number;
+  blockSize: number;
+  modificationTime: Date;
+  accessTime: Date;
+}
+
 export type ClusterCredential = {
   id?: number;
   configType?: Dict;
@@ -95,7 +109,3 @@ export type CredentialFileUploadParam = QueryParam & {
   id?: number;
   files?: File[];
 }
-
-
-
-

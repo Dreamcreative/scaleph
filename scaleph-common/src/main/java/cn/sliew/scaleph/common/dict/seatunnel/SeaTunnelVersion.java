@@ -18,9 +18,7 @@
 
 package cn.sliew.scaleph.common.dict.seatunnel;
 
-import cn.sliew.scaleph.common.dict.DictDefinition;
 import cn.sliew.scaleph.common.dict.DictInstance;
-import cn.sliew.scaleph.common.dict.DictType;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -30,7 +28,7 @@ import java.util.Arrays;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum SeaTunnelVersion implements DictInstance {
 
-    V_2_2_0_BETA("2.2.0-beta", "2.2.0-beta"),
+    V_2_3_0_BETA("2.3.0-beta", "2.3.0-beta"),
     ;
 
     @JsonCreator
@@ -47,11 +45,6 @@ public enum SeaTunnelVersion implements DictInstance {
     SeaTunnelVersion(String value, String label) {
         this.value = value;
         this.label = label;
-    }
-
-    @Override
-    public DictDefinition getDefinition() {
-        return DictType.SEATUNNEL_VERSION;
     }
 
     @Override

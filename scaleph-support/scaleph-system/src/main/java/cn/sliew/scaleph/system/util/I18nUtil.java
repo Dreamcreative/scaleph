@@ -28,6 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class I18nUtil {
+
     private static MessageSource messageSource;
 
     public I18nUtil(MessageSource messageSource) {

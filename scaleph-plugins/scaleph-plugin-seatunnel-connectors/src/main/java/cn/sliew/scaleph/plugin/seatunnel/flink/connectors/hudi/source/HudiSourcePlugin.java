@@ -21,7 +21,7 @@ package cn.sliew.scaleph.plugin.seatunnel.flink.connectors.hudi.source;
 import cn.sliew.scaleph.plugin.framework.core.PluginInfo;
 import cn.sliew.scaleph.plugin.framework.property.PropertyDescriptor;
 import cn.sliew.scaleph.plugin.seatunnel.flink.SeaTunnelConnectorPlugin;
-import cn.sliew.scaleph.plugin.seatunnel.flink.SeaTunnelPluginMapping;
+import cn.sliew.scaleph.common.dict.seatunnel.SeaTunnelPluginMapping;
 import cn.sliew.scaleph.plugin.seatunnel.flink.env.CommonProperties;
 import com.google.auto.service.AutoService;
 
@@ -35,7 +35,7 @@ import static cn.sliew.scaleph.plugin.seatunnel.flink.connectors.hudi.source.Hud
 public class HudiSourcePlugin extends SeaTunnelConnectorPlugin {
 
     public HudiSourcePlugin() {
-        this.pluginInfo = new PluginInfo(getPluginName().getLabel(),
+        this.pluginInfo = new PluginInfo(getIdentity(),
                 "Currently, only supports hudi cow table and Snapshot Query with Batch Mode.\n" +
                         "\n" +
                         "In order to use this connector, You must ensure your spark/flink cluster already integrated hive. The tested hive version is 2.3.9.",
@@ -48,7 +48,7 @@ public class HudiSourcePlugin extends SeaTunnelConnectorPlugin {
         props.add(USE_KERBEROS);
         props.add(KERBEROS_PRINCIPAL);
         props.add(KERBEROS_PRINCIPAL_FILE);
-        props.add(CommonProperties.FIELD_NAME);
+        props.add(CommonProperties.PARALLELISM);
         props.add(CommonProperties.RESULT_TABLE_NAME);
         supportedProperties = Collections.unmodifiableList(props);
     }

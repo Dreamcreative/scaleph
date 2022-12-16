@@ -20,6 +20,9 @@ package cn.sliew.scaleph.plugin.seatunnel.flink.connectors.jdbc;
 
 import cn.sliew.scaleph.plugin.datasource.jdbc.JdbcPoolProperties;
 import cn.sliew.scaleph.plugin.framework.property.*;
+import cn.sliew.scaleph.plugin.seatunnel.flink.resource.ResourceProperty;
+import cn.sliew.scaleph.resource.service.enums.ResourceType;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public enum JdbcProperties {
     ;
@@ -49,7 +52,6 @@ public enum JdbcProperties {
             .description("jdbc username")
             .type(PropertyType.STRING)
             .parser(Parsers.STRING_PARSER)
-            .properties(Property.Required)
             .addValidator(Validators.NON_BLANK_VALIDATOR)
             .fallbackProperty(JdbcPoolProperties.USERNAME)
             .validateAndBuild();
@@ -59,15 +61,14 @@ public enum JdbcProperties {
             .description("jdbc password")
             .type(PropertyType.STRING)
             .parser(Parsers.STRING_PARSER)
-            .properties(Property.Required)
             .addValidator(Validators.NON_BLANK_VALIDATOR)
             .fallbackProperty(JdbcPoolProperties.PASSWORD)
             .validateAndBuild();
 
-    public static final PropertyDescriptor<Integer> CONNECTION_CHECK_TIMEOUT_SEC = new PropertyDescriptor.Builder<String>()
+    public static final PropertyDescriptor<Integer> CONNECTION_CHECK_TIMEOUT_SEC = new PropertyDescriptor.Builder<Integer>()
             .name("connection_check_timeout_sec")
             .description("The time in seconds to wait for the database operation used to validate the connection to complete.")
-            .type(PropertyType.STRING)
+            .type(PropertyType.INT)
             .defaultValue(30)
             .parser(Parsers.INTEGER_PARSER)
             .addValidator(Validators.POSITIVE_INTEGER_VALIDATOR)

@@ -21,59 +21,60 @@ package cn.sliew.scaleph.common.nio;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
+import org.apache.commons.compress.compressors.gzip.GzipParameters;
+import org.springframework.util.StringUtils;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 public enum TarUtil {
     ;
 
     public static Path untar(Path source) throws IOException {
-        final String fileName = source.getFileName().toString();
-        String targetDir = fileName.substring(0, fileName.lastIndexOf("."));
-        final Path target = source.getParent().resolve(targetDir);
-        if (Files.notExists(target)) {
-            Files.createDirectory(target, TempFileUtil.attributes);
-        }
-
-        try (InputStream fi = Files.newInputStream(source);
-             BufferedInputStream bi = new BufferedInputStream(fi);
-             GzipCompressorInputStream gzi = new GzipCompressorInputStream(bi);
+        try (BufferedInputStream fi = (BufferedInputStream) FileUtil.getInputStream(source);
+             GzipCompressorInputStream gzi = new GzipCompressorInputStream(fi);
              TarArchiveInputStream ti = new TarArchiveInputStream(gzi)) {
+            String targetDir = getTaregtDir(gzi.getMetaData(), source.getFileName().toString());
+            Path target = source.getParent().resolve(targetDir);
+            FileUtil.createDir(target);
 
             ArchiveEntry entry;
             while ((entry = ti.getNextEntry()) != null) {
-
                 Path newPath = zipSlipProtect(entry, target);
-
                 if (entry.isDirectory()) {
-                    Files.createDirectories(newPath);
+                    FileUtil.createDir(newPath);
                 } else {
                     Path parent = newPath.getParent();
                     if (parent != null) {
                         if (Files.notExists(parent)) {
-                            Files.createDirectories(parent);
+                            FileUtil.createDir(parent);
                         }
                     }
                     Files.copy(ti, newPath, StandardCopyOption.REPLACE_EXISTING);
                 }
             }
+            return target;
         }
-        return target;
+    }
+
+    private static String getTaregtDir(GzipParameters parameters, String fileName) {
+        String filename = parameters.getFilename();
+        if (StringUtils.hasText(filename)) {
+            return filename;
+        }
+        return fileName.substring(0, fileName.lastIndexOf("."));
     }
 
     private static Path zipSlipProtect(ArchiveEntry entry, Path targetDir) throws IOException {
-        Path targetDirResolved = targetDir.resolve(entry.getName());
+        Path targetDirResolved = Paths.get(targetDir.toString(), entry.getName());
         Path normalizePath = targetDirResolved.normalize();
-
         if (!normalizePath.startsWith(targetDir)) {
             throw new IOException("tar file already breakdown: " + entry.getName());
         }
-
         return normalizePath;
     }
 }

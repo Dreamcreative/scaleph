@@ -21,7 +21,7 @@ package cn.sliew.scaleph.plugin.seatunnel.flink.connectors.iceberg.source;
 import cn.sliew.scaleph.plugin.framework.core.PluginInfo;
 import cn.sliew.scaleph.plugin.framework.property.PropertyDescriptor;
 import cn.sliew.scaleph.plugin.seatunnel.flink.SeaTunnelConnectorPlugin;
-import cn.sliew.scaleph.plugin.seatunnel.flink.SeaTunnelPluginMapping;
+import cn.sliew.scaleph.common.dict.seatunnel.SeaTunnelPluginMapping;
 import cn.sliew.scaleph.plugin.seatunnel.flink.env.CommonProperties;
 import com.google.auto.service.AutoService;
 
@@ -35,7 +35,7 @@ import static cn.sliew.scaleph.plugin.seatunnel.flink.connectors.iceberg.source.
 public class IcebergSourcePlugin extends SeaTunnelConnectorPlugin {
 
     public IcebergSourcePlugin() {
-        this.pluginInfo = new PluginInfo(getPluginName().getLabel(),
+        this.pluginInfo = new PluginInfo(getIdentity(),
                 "Apache Iceberg is an open table format for huge analytic datasets",
                 IcebergSourcePlugin.class.getName());
 
@@ -54,7 +54,7 @@ public class IcebergSourcePlugin extends SeaTunnelConnectorPlugin {
         props.add(START_SNAPSHOT_TIMESTAMP);
         props.add(USE_SNAPSHOT_TIMESTAMP);
         props.add(STREAM_SCAN_STRATEGY);
-        props.add(CommonProperties.FIELD_NAME);
+        props.add(CommonProperties.PARALLELISM);
         props.add(CommonProperties.RESULT_TABLE_NAME);
         supportedProperties = Collections.unmodifiableList(props);
     }

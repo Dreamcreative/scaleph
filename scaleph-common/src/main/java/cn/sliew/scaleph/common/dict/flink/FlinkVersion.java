@@ -18,9 +18,7 @@
 
 package cn.sliew.scaleph.common.dict.flink;
 
-import cn.sliew.scaleph.common.dict.DictDefinition;
 import cn.sliew.scaleph.common.dict.DictInstance;
-import cn.sliew.scaleph.common.dict.DictType;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -47,6 +45,8 @@ public enum FlinkVersion implements DictInstance {
     V_1_15_0("1.15.0", "1.15.0"),
     V_1_15_1("1.15.1", "1.15.1"),
     V_1_15_2("1.15.2", "1.15.2"),
+
+    V_1_16_0("1.16.0", "1.16.0"),
     ;
 
     @JsonCreator
@@ -63,11 +63,6 @@ public enum FlinkVersion implements DictInstance {
     FlinkVersion(String value, String label) {
         this.value = value;
         this.label = label;
-    }
-
-    @Override
-    public DictDefinition getDefinition() {
-        return DictType.FLINK_VERSION;
     }
 
     @Override

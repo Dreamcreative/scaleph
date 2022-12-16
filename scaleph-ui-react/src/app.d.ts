@@ -1,3 +1,5 @@
+import { extend } from 'lodash';
+
 export type AuthCode = {
   uuid: string;
   img: string;
@@ -66,14 +68,7 @@ export type QueryParam = {
  */
 export type Dict = {
   label?: string;
-  value?: string;
-};
-
-export type TablePageResponse<T> = {
-  pageSize: number;
-  current: number;
-  total: number;
-  data: T[];
+  value?: string | number;
 };
 
 export type ModalFormProps<T> = {
@@ -81,7 +76,7 @@ export type ModalFormProps<T> = {
   visible: boolean;
   onVisibleChange?: (visible: boolean) => void;
   onCancel: () => void;
-  onOK?: () => void;
+  onOK?: (values: any) => void;
 };
 
 export type TreeNode = {
@@ -90,4 +85,12 @@ export type TreeNode = {
   children?: TreeNode[];
   origin?: any;
   showOpIcon?: boolean;
+};
+
+export type CascaderOption = {
+  value: string | number;
+  label?: React.ReactNode;
+  disabled?: boolean;
+  children?: Option[];
+  isLeaf?: boolean;
 };

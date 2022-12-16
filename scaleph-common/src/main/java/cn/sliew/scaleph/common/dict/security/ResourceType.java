@@ -18,9 +18,7 @@
 
 package cn.sliew.scaleph.common.dict.security;
 
-import cn.sliew.scaleph.common.dict.DictDefinition;
 import cn.sliew.scaleph.common.dict.DictInstance;
-import cn.sliew.scaleph.common.dict.DictType;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -30,9 +28,11 @@ import java.util.Arrays;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ResourceType implements DictInstance {
 
-    MENU("0", "菜单权限"),
-    OPERATION("1", "操作权限"),
-    DATA("2", "数据权限"),
+    MENU("0", "菜单"),
+    PAGE("1", "页面"),
+    BUTTON("2", "按钮"),
+    ROW("10", "数据-行权限"),
+    COLUMN("11", "数据-列权限"),
     ;
 
     @JsonCreator
@@ -49,11 +49,6 @@ public enum ResourceType implements DictInstance {
     ResourceType(String value, String label) {
         this.value = value;
         this.label = label;
-    }
-
-    @Override
-    public DictDefinition getDefinition() {
-        return DictType.RESOURCE_TYPE;
     }
 
     @Override

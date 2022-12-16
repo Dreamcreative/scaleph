@@ -1,10 +1,10 @@
 // https://umijs.org/config/
-import { defineConfig } from '@umijs/max';
+import {defineConfig} from '@umijs/max';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
 
-const { REACT_APP_ENV } = process.env;
+const {REACT_APP_ENV} = process.env;
 
 export default defineConfig({
   hash: true,
@@ -45,6 +45,9 @@ export default defineConfig({
   manifest: {
     basePath: '/',
   },
+  mfsu: {
+    strategy: 'normal'
+  },
   // Fast Refresh 热更新
   fastRefresh: true,
   presets: ['umi-presets-pro'],
@@ -56,3 +59,5 @@ export default defineConfig({
   //   },
   // ],
 });
+
+

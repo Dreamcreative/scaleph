@@ -27,20 +27,19 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.nio.file.Path;
 import java.util.List;
 
-public interface ClusterCredentialService extends ResourceDescriptor<ClusterCredentialDTO, Path> {
+public interface ClusterCredentialService extends ResourceDescriptor<ClusterCredentialDTO> {
 
     Page<ClusterCredentialDTO> list(ClusterCredentialListParam param);
 
-    ClusterCredentialDTO selectOne(Serializable id);
+    ClusterCredentialDTO selectOne(Long id);
 
-    void insert(ClusterCredentialDTO dto);
+    ClusterCredentialDTO insert(ClusterCredentialDTO dto);
 
     int update(ClusterCredentialDTO dto);
 
-    int deleteById(Serializable id);
+    int deleteById(Long id);
 
     int deleteBatch(List<Long> ids);
 
